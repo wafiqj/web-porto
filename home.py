@@ -17,7 +17,7 @@ def home():
         ]
 
     current_options_labels = [item["label"] for item in st.session_state.pills_state]
-    selection = header.pills("", current_options_labels)
+    selection = header.pills("aa", current_options_labels, label_visibility="collapsed",)
 
     header.write("""<div class='fixed-header'/>""", unsafe_allow_html=True)
     
@@ -28,7 +28,8 @@ def home():
         div[data-testid="stVerticalBlock"] div:has(div.fixed-header) {
             position: sticky;
             top: 2.875rem;
-            background-color: var(--background-color);
+            backdrop-filter: blur(10px);
+            background: rgba(var(--background-color-rgb), 0.8);
             z-index: 999;
         }
         
