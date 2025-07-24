@@ -27,7 +27,7 @@ def home():
     <style>
         div[data-testid="stVerticalBlock"] div:has(div.fixed-header) {
             position: sticky;
-            top: 2.875rem;
+            top: 3rem;
             backdrop-filter: blur(10px);
             background: rgba(var(--background-color-rgb), 0.8);
             z-index: 999;
