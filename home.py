@@ -40,7 +40,7 @@ def home():
     )
 
     try:
-        genai.configure(api_key=os.environ.NAMADAUN)
+        genai.configure(api_key=os.environ['NAMADAUN'])
         # Pilih model Gemini. 'gemini-pro' cocok untuk teks.
         # Ada juga 'gemini-pro-vision' untuk multimodal.
         model = genai.GenerativeModel('gemini-2.5-flash')
