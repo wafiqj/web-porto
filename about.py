@@ -11,27 +11,23 @@ import streamlit as st
 # st.title("Welcome! 👋🏻")
 # st.markdown("---")
 st.image("photo.jpg", width=200)
-st.subheader("You can call me Wafiq.")
+st.markdown("#### Wafiq Jaisyurrahman, :small[(uo)] S.Kom. &mdash; *Data Enthusiast*")
 
-st.write("""
-Selamat datang di portofolio data saya!
-Saya bersemangat dalam mengubah data mentah menjadi insight yang berarti dan solusi inovatif.
-Di sini Anda akan menemukan berbagai proyek yang menunjukkan keahlian saya dalam analisis data,
-pemodelan machine learning, dan visualisasi interaktif.
+st.markdown("""
+Hey! I’m Wafiq Jaisyurrahman. I studied Information Systems at Telkom University, and I’ve been diving deep into the world of data, AI, deep learning, and computer vision ever since.
+I love building smart solutions that actually work in real life — from dashboards to machine learning models. Most of the time, I’m working with Python, spreadsheets, Power BI, Azure, and MySQL.
+*Always curious, always learning*.
 """)
-
-# Ganti URL placeholder dengan URL foto Anda sendiri, atau letakkan foto di folder proyek
-# dan gunakan st.image("nama_foto.jpg")
 
 st.markdown("---") # Garis pemisah
 
-st.write("Tertarik dengan pekerjaan saya? Mari jelajahi proyek-proyek saya!")
+st.write("Take a look at some of my work below!")
 
 # Tombol CTA
-if st.button("Lihat Proyek Saya"):
+if st.button("My Projects"):
     st.switch_page("project.py")
     # Di aplikasi multi-halaman, Anda akan menggunakan st.switch_page("pages/projects.py")
     # atau mekanisme navigasi lainnya.
 
 st.markdown("---")
-st.write("Hubungi saya di [LinkedIn Anda](https://www.linkedin.com/in/nama-anda/) atau [GitHub Anda](https://github.com/nama-anda/)")
+st.write("Let's connect on [LinkedIn](https://www.linkedin.com/in/wafiq-jaisyurrahman/) or [GitHub](https://github.com/wafiqj)!")
