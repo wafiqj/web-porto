@@ -10,24 +10,23 @@ import streamlit as st
 
 # st.title("Welcome! 👋🏻")
 # st.markdown("---")
-st.image("photo.jpg", width=200)
-st.markdown("#### Wafiq Jaisyurrahman, :small[(uo)] S.Kom. &mdash; *Data Enthusiast*")
+
+st.image("images/photo.jpg", width=200)
+st.markdown("#### Wafiq Jaisyurrahman, :small[(uo)] S.Kom. &mdash; *Data Enthusiast* :streamlit:")
 
 st.markdown("""
-Hey! I’m Wafiq Jaisyurrahman. I studied Information Systems at Telkom University, and I’ve been diving deep into the world of data, AI, deep learning, and computer vision ever since.
-I love building smart solutions that actually work in real life — from dashboards to machine learning models. Most of the time, I’m working with Python, spreadsheets, Power BI, Azure, and MySQL.
-*Always curious, always learning*.
+Hey there! I'm Wafiq Jaisyurrahman, an Information Systems student from Telkom University. I've been really into data, AI, deep learning, and computer vision for a while now. I mostly enjoy building things that help out, whether that's dashboards or machine learning models. You'll usually find me working with Python, spreadsheets, Power BI, Azure, MySQL and many more. *Always curious, always learning*.
 """)
 
-st.markdown("---") # Garis pemisah
+# st.markdown("---") # Garis pemisah
 
-st.write("Take a look at some of my work below!")
+# st.write("Take a look at some of my work below!")
 
-# Tombol CTA
-if st.button("My Projects"):
-    st.switch_page("project.py")
-    # Di aplikasi multi-halaman, Anda akan menggunakan st.switch_page("pages/projects.py")
-    # atau mekanisme navigasi lainnya.
+# # Tombol CTA
+# if st.button("My Projects"):
+#     st.switch_page("project.py")
+#     # Di aplikasi multi-halaman, Anda akan menggunakan st.switch_page("pages/projects.py")
+#     # atau mekanisme navigasi lainnya.
 
 st.markdown("---")
 st.write("Let's connect on [LinkedIn](https://www.linkedin.com/in/wafiq-jaisyurrahman/) or [GitHub](https://github.com/wafiqj)!")

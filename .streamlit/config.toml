@@ -1,0 +1,12 @@
+[[theme.fontFaces]]
+family="Plus Jakarta Sans"
+url="https://fonts.gstatic.com/s/plusjakartasans/v11/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2"
+style="normal"
+weight="200 800"
+[[theme.fontFaces]]
+family="Plus Jakarta Sans"
+url="https://fonts.gstatic.com/s/plusjakartasans/v11/LDIuaomQNQcsA88c7O9yZ4KMCoOg4Koz4y6qhA.woff2"
+style="italic"
+weight="200 800"
+[theme]
+font="Plus Jakarta Sans, sans-serif"

@@ -1,33 +1,66 @@
 import streamlit as st
+import json
 
 st.title("Project")
 
-with st.container(border=True):
-    col1, col2 = st.columns([0.3, 0.65])
+@st.dialog("Project Details", width="large")
+def dialog(project_key):
+    project = next((p for p in projects if p["button_key"] == project_key), None)
+    if project:
+        st.markdown(f"# {project['title']}")
+        st.image(project["image"])
+        if "tech_stack" in project:
+            badges = " ".join([f":blue-badge[{tech}]" for tech in project["tech_stack"]])
+            st.markdown(badges)
 
-    with col1:
-        st.image("project_big_data.jpg", width=320)
-    
-    with col2:
-        st.markdown("#### Big Data Pipeline")
-        st.write("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type ")
+        custom_style = """
+<style>
+.justify-text p {
+    text-align: justify;
+}
+</style>
+"""
+        st.markdown(custom_style, unsafe_allow_html=True)
+        st.markdown(f'<div class="justify-text">\n\n{project["description"]}\n\n</div>', unsafe_allow_html=True)
+        # st.write(project["description"])
+        # text = ''.join(f'<p>{para}</p>' for para in project["description"].split('\n\n'))
+        # st.markdown(f'<div style="text-align: justify;">{text}</div>', unsafe_allow_html=True)
+        if "link" in project:
+            st.link_button("Github Repo", url=project["link"])
+    else:
+        st.error("Project not found.")
 
-with st.container(border=True):
-    col1, col2 = st.columns([0.3, 0.65])
+# Load project data from JSON file
+with open("assets/project_data.json", "r") as f:
+    projects = json.load(f)
 
-    with col1:
-        st.image("project_car_detect.png", width=320)
-    
-    with col2:
-        st.markdown("#### CompVis Implementation")
-        st.write("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type ")
 
-with st.container(border=True):
-    col1, col2 = st.columns([0.3, 0.65])
+DESCRIPTION_LIMIT = 150
 
-    with col1:
-        st.image("project_sales_dash.png", width=320)
-    
-    with col2:
-        st.markdown("#### Sales Dashboard Real-time")
-        st.write("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type ")
+# Display projects in rows of max 3 columns
+for i in range(0, len(projects), 3):
+    row_projects = projects[i:i+3]
+    cols = st.columns(3)
+    for idx, project in enumerate(row_projects):
+        with cols[idx].container(border=True):
+            st.image(project["image"])
+            st.markdown(f"#### {project['title']}")
+
+            display_description = project["description"]
+            if len(display_description) > DESCRIPTION_LIMIT:
+                display_description = display_description[:DESCRIPTION_LIMIT] + "..."
+            st.write(display_description)
+
+            colA, colB = st.columns([0.6, 0.4])
+            if "tech_stack" in project:
+                badges = " ".join([f":blue-badge[{tech}]" for tech in project["tech_stack"]])
+                colA.markdown(badges)
+
+            # print(len(project["tech_stack_logos"]))
+            # colsa = st.columns(len(project["tech_stack_logos"]))
+            # if "tech_stack_logos" in project:
+            #     for idex, logo in enumerate(project["tech_stack_logos"]):
+            #         colsa[idex].image(logo, width=24, use_container_width=False)
+
+            if colB.button("View Project", key=project["button_key"]):
+                dialog(project["button_key"])

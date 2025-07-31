@@ -1,119 +1,60 @@
 import streamlit as st
-import google.generativeai as genai
-import os
-from dotenv import load_dotenv
+
+st.set_page_config(layout="wide")
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+    html, body, [class*="css"]  {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 def home():
-    st.title("Welcome 👋🏻")
-    header = st.container()
-    header.markdown("### *Get to Know More* Wafiq!")
-
-    if 'pills_state' not in st.session_state:
-        st.session_state.pills_state = [
-            {"label": "Hello, how are you?", "clicked": False},
-            {"label": "Who is Wafiq?", "clicked": False},
-            {"label": "Where was he born?", "clicked": False},
-            {"label": "How old is he?", "clicked": False}
-        ]
-
-    current_options_labels = [item["label"] for item in st.session_state.pills_state]
-    selection = header.pills("aa", current_options_labels, label_visibility="collapsed",)
-
-    header.write("""<div class='fixed-header'/>""", unsafe_allow_html=True)
-    
-    # Custom CSS for the sticky header with dark mode support
-    st.markdown(
-        """
+    st.markdown("""
     <style>
-        div[data-testid="stVerticalBlock"] div:has(div.fixed-header) {
-            position: sticky;
-            top: 3.5rem;
-            backdrop-filter: blur(10px);
-            background: rgba(var(--background-color-rgb), 0.8);
-            z-index: 999;
-        }
-        
-        .fixed-header {
-            border-bottom: 2px solid #cacaca;
-        }
+    pre, code {
+        font-size: 16px !important;
+    }
     </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # --- Load Environment Variables ---
-    load_dotenv()  # Load environment variables from .env file
-
-    try:
-        genai.configure(api_key=os.environ['NAMADAUN'])
-        # Choose Gemini model. 'gemini-pro' is suitable for text.
-        # There is also 'gemini-pro-vision' for multimodal.
-        model = genai.GenerativeModel('gemini-2.5-flash')
-    except KeyError:
-        st.error("Google Gemini API key not found!")
-        st.stop() # Stop execution if API key is missing
-
-    # --- Initialize Chat History ---
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-    opening = st.chat_message("assistant")
-    opening.write("Hi, I'm Wafiq Assistant. Is there anything you want to ask?")
-
-    # --- Show Previous Chat History ---
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+""", unsafe_allow_html=True)
 
 
-    def send_message(user_message):
-        # Add user message to history
-        st.session_state.messages.append({"role": "user", "content": user_message})
-        with st.chat_message("user"):
-            st.markdown(user_message)
+    st.title("Welcome!")
 
-        # Get response from Gemini model
-        with st.chat_message("assistant"):
-            with st.spinner("load.."):
-                try:
-                    # Send chat history for context
-                    # Convert history format for Gemini model
-                    history_for_gemini = []
-                    for msg in st.session_state.messages:
-                        if msg["role"] == "user":
-                            history_for_gemini.append({"role": "user", "parts": [msg["content"]]})
-                        elif msg["role"] == "assistant":
-                            history_for_gemini.append({"role": "model", "parts": [msg["content"]]})
-                    # Start chat with existing history
-                    chat = model.start_chat(history=history_for_gemini[:-1]) # Send all except current user prompt
-                    response = chat.send_message(user_message) # Send current user prompt
-                    # Show response
-                    st.markdown(response.text)
-                    # Add AI response to history
-                    st.session_state.messages.append({"role": "assistant", "content": response.text})
+    st.code("""class Wafiq:
+    def __init__(self):
+        self.name = "Wafiq Jaisyurrahman"
+        self.background = "Sistem Informasi, Telkom University"
+        self.interests = ["Big Data", "Data Engineering", "AI", "Deep Learning"]
 
-                except Exception as e:
-                    st.error(f"An error occurred while processing the request: {e}")
-                    st.markdown("Please try again or check your internet connection.")
+    def say_hi(self):
+        print(f"Hi, I'm {self.name} 👋 Let's build something cool together!")
+
+wafiq = Wafiq()
+wafiq.say_hi()
+""", language="python")
     
-    # --- Logic for Clicked Pills ---
-    if selection:        
-        # Send selected pill as user message
-        for item in st.session_state.pills_state:
-            if item["label"] == selection and not item["clicked"]:
-                item["clicked"] = True
-                send_message(selection)
-                st.rerun()
+    st.divider()
+    st.markdown("""
+###### Want to know more about my background, skills, and experience?
+Feel free to explore my CV below.""")
+    st.link_button("View CV", url="https://drive.google.com/file/d/1QmNksv7ooi24c0losWWB5GhvquMPBN1D/view?usp=sharing", type="secondary")
 
-    # --- User Input ---
-    if prompt := st.chat_input("Type your message here..."):
-        send_message(prompt)
-
-pg = st.navigation([
+pg = st.navigation({
+    "Portofolio":[
     st.Page(home, title="Home", icon="🏠"),
+    st.Page("waps.py", title="WAPS", icon="🧠"),
     st.Page("about.py", title="About", icon="🧒🏻"),
     st.Page("project.py", title="Project", icon="💻"),
-    st.Page("resume.py", title="Resume", icon="📄"),
-    st.Page("contact.py", title="Contact", icon="📲")])
+    st.Page("contact.py", title="Contact", icon="📲")],
+    "Playground":[
+    st.Page("playground/quran-game.py", title="Quran Game", icon="📖"),
+    st.Page("playground/mood-detect.py", title="Mood Detector", icon="🧐"),
+    st.Page("playground/number-guess.py", title="Guess the Number", icon="🔢"),
+    st.Page("playground/wall-of-fame.py", title="Wall of Fame", icon="🖼️"),
+    ]
+    })
 
 pg.run()
