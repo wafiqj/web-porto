@@ -1,4 +1,3 @@
 .env
 .venv/
-quran/
 .streamlit/secrets.toml
