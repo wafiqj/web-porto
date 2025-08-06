@@ -6,16 +6,16 @@ from PIL import Image, ImageOps # Untuk manipulasi gambar
 from streamlit_drawable_canvas import st_canvas # Untuk kanvas gambar
 from ultralytics import YOLO # Untuk model YOLO
 
-st.markdown("# 🔢 Guess the Number :blue-badge[Coming Soon]")
+st.markdown("# 🔢 Guess the Number")
 st.markdown("Tags : :blue-badge[Image Classification], :blue-badge[Deep Learning], :blue-badge[Computer Vision]")
-st.info("This playground is coming soon. Stay tuned for updates!")
+# st.info("This playground is coming soon. Stay tuned for updates!")
 
 @st.cache_resource
 def load_yolo_classify_model():
     try:
         # Ganti dengan path ke model YOLO Anda yang sudah dilatih di MNIST
         # Pastikan ini adalah model klasifikasi (yolov8n-cls.pt yang di fine-tune MNIST)
-        model_path = "best.pt" # ASUMSIKAN NAMA MODEL ANDA
+        model_path = "assets/best.pt" # ASUMSIKAN NAMA MODEL ANDA
         model = YOLO(model_path)
         return model
     except Exception as e:
