@@ -9,3 +9,5 @@ azure-cognitiveservices-speech
 pydub
 audioop-lts
 streamlit-webrtc
+streamlit-drawable-canvas
+ultralytics
