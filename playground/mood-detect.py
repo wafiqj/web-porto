@@ -1,6 +1,6 @@
 import streamlit as st
-import re
-import nltk
+# import re
+# import nltk
 
 st.markdown("# 🧐 Mood Detector")
 st.markdown("Tags : :blue-badge[Sentiment Analysis], :blue-badge[Word Embedding], :blue-badge[Data Mining]")
