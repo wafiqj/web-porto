@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-# import cv2 # Untuk pra-pemrosesan gambar
+import cv2 # Untuk pra-pemrosesan gambar
 from PIL import Image, ImageOps # Untuk manipulasi gambar
 from streamlit_drawable_canvas import st_canvas # Untuk kanvas gambar
 from ultralytics import YOLO # Untuk model YOLO
