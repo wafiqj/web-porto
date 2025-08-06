@@ -6,3 +6,5 @@ captcha
 streamlit-js-eval
 python-Levenshtein
 azure-cognitiveservices-speech
+pydub
+streamlit-webrtc
