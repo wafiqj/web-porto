@@ -11,4 +11,4 @@ audioop-lts
 streamlit-webrtc
 streamlit-drawable-canvas
 ultralytics
-opencv-python
+opencv-python-headless 
