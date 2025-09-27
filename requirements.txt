@@ -12,5 +12,3 @@ streamlit-webrtc
 streamlit-drawable-canvas
 ultralytics
 opencv-python-headless
-libgl1-mesa-glx
-libglib2.0-0
