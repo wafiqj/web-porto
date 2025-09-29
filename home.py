@@ -48,7 +48,7 @@ pg = st.navigation({
     st.Page("waps.py", title="WAPS", icon="🧠"),
     st.Page("about.py", title="About", icon="🧒🏻"),
     st.Page("project.py", title="Project", icon="💻"),
-    st.Page("resume.py", title="Resume", icon="📄"),
+    # st.Page("resume.py", title="Resume", icon="📄"),
     st.Page("contact.py", title="Contact", icon="📲")],
     "Playground":[
     st.Page("playground/number-guess.py", title="Guess the Number", icon="🔢"),
