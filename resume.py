@@ -5,7 +5,7 @@ st.set_page_config(page_title="CV - Wafiq Jaisyurrahman")
 st.write("Redirecting to my CV...")
 # https://drive.google.com/file/d/1f1Is1HIsUQhdf5J3gbUgKFwMicl6D4e7/view?usp=sharing
 # Ganti ID di bawah ini dengan ID Google Drive kamu
-cv_link = "https://drive.google.com/file/d/1f1Is1HIsUQhdf5J3gbUgKFwMicl6D4e7/view?usp=sharing"
+cv_link = "https://drive.google.com/file/d/1f1Is1HIsUQhdf5J3gbUgKFwMicl6D4e7/preview"
 
 # Redirect otomatis
 st.markdown(f"""
