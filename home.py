@@ -40,7 +40,7 @@ wafiq.say_hi()
     st.markdown("""
 ###### Want to know more about my background, skills, and experience?
 Feel free to explore my CV below.""")
-    st.link_button("View CV", url="https://drive.google.com/file/d/1QmNksv7ooi24c0losWWB5GhvquMPBN1D/view?usp=sharing", type="secondary")
+    st.link_button("View CV", url="/resume", type="secondary")
 
 pg = st.navigation({
     "Portofolio":[
