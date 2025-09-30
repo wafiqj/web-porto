@@ -40,7 +40,7 @@ wafiq.say_hi()
     st.markdown("""
 ###### Want to know more about my background, skills, and experience?
 Feel free to explore my CV below.""")
-    st.link_button("View CV", url="https://drive.google.com/file/d/1f1Is1HIsUQhdf5J3gbUgKFwMicl6D4e7/preview", type="secondary")
+    st.link_button("View CV", url="/resume", type="secondary")
 
 pg = st.navigation({
     "Portofolio":[
@@ -48,7 +48,7 @@ pg = st.navigation({
     st.Page("waps.py", title="WAPS", icon="🧠"),
     st.Page("about.py", title="About", icon="🧒🏻"),
     st.Page("project.py", title="Project", icon="💻"),
-    # st.Page("resume.py", title="Resume", icon="📄"),
+    st.Page("resume.py", title="Resume", icon="📄"),
     st.Page("contact.py", title="Contact", icon="📲")],
     "Playground":[
     st.Page("playground/number-guess.py", title="Guess the Number", icon="🔢"),
