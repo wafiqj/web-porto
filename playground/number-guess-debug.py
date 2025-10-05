@@ -21,35 +21,25 @@ model = load_yolo_classify_model()
 
 st.markdown("Mari kita lihat bagaimana AI 'melihat' dan memprediksi angka yang Anda gambar menggunakan model YOLO!")
 
-# --- Pengaturan warna & ukuran kanvas ---
-canvas_width = 280
-canvas_height = 280
-stroke_width = st.slider("✏️ Brush size:", 5, 50, 20)
-stroke_color = st.color_picker("🎨 Choose brush color", "#000000")  # default hitam
-bg_color = st.color_picker("🧻 Choose background color", "#FFFFFF")  # default putih
+left_col, right_col = st.columns([4, 1])
 
-# --- Kanvas gambar ---
-canvas_result = st_canvas(
-    fill_color="rgba(255, 255, 255, 0)",  # transparan (biar gak nutup gambar)
-    stroke_width=stroke_width,
-    stroke_color=stroke_color,
-    background_color=bg_color,
-    height=canvas_height,
-    width=canvas_width,
-    drawing_mode="freedraw",
-    key="canvas_drawing",
-)
+with left_col:
+    canvas_result = st_canvas(
+        fill_color="rgba(255, 255, 255, 0)",
+        stroke_width=stroke_width,
+        stroke_color=stroke_color,
+        background_color=bg_color,
+        height=canvas_height,
+        width=canvas_width,
+        drawing_mode="freedraw",
+        key="canvas_drawing",
+    )
 
-col1, col2, col3 = st.columns([1, 1, 1])
-
-with col1:
-    stroke_width = st.slider("✏️ Brush size", 1, 50, 25)
-
-with col2:
-    stroke_color = st.color_picker("🎨 Brush color", "#FFFFFF")
-
-with col3:
-    bg_color = st.color_picker("🖼️ Background", "#000000")
+with right_col:
+    st.subheader("🖌️ Settings")
+    stroke_width = st.slider("Brush size", 1, 50, 25)
+    stroke_color = st.color_picker("Brush color", "#FFFFFF")
+    bg_color = st.color_picker("Background", "#000000")
 
 # --- Tombol Prediksi ---
 st.markdown("---")
