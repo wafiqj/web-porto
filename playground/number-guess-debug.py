@@ -88,39 +88,39 @@ if st.button("Prediksi Angka", type="primary"):
             st.markdown("Gambar yang sudah diproses ini (RGB, ukuran tertentu) kemudian dimasukkan ke lapisan input model YOLO.")
             st.markdown("Model ini didesain untuk memproses gambar secara efisien dan mulai mengekstrak informasi.")
             
-            # Ambil model PyTorch di dalam YOLO
-            torch_model = model.model
+            # # Ambil model PyTorch di dalam YOLO
+            # torch_model = model.model
 
-            # Pilih layer yang ingin di-inspect
-            layer_index = st.number_input("🔢 Pilih index layer yang ingin dilihat (0 - {}):".format(len(torch_model.model)-1), 
-                                        min_value=0, 
-                                        max_value=len(torch_model.model)-1, 
-                                        value=2, 
-                                        step=1)
+            # # Pilih layer yang ingin di-inspect
+            # layer_index = st.number_input("🔢 Pilih index layer yang ingin dilihat (0 - {}):".format(len(torch_model.model)-1), 
+            #                             min_value=0, 
+            #                             max_value=len(torch_model.model)-1, 
+            #                             value=2, 
+            #                             step=1)
             
-            features = {}
-            def get_features(name):
-                def hook(model, input, output):
-                    features[name] = output.detach()
-                return hook
+            # features = {}
+            # def get_features(name):
+            #     def hook(model, input, output):
+            #         features[name] = output.detach()
+            #     return hook
 
-            # Pasang hook di layer yang dipilih
-            torch_model.model[int(layer_index)].register_forward_hook(get_features(f"layer_{layer_index}"))
+            # # Pasang hook di layer yang dipilih
+            # torch_model.model[int(layer_index)].register_forward_hook(get_features(f"layer_{layer_index}"))
 
-            # Jalankan forward pass manual
-            _ = torch_model(input_tensor)
+            # # Jalankan forward pass manual
+            # _ = torch_model(input_tensor)
 
-            # Ambil hasil fitur
-            feat = features[f"layer_{layer_index}"]
-            st.write(f"✅ Feature map shape dari layer {layer_index}:", feat.shape)
+            # # Ambil hasil fitur
+            # feat = features[f"layer_{layer_index}"]
+            # st.write(f"✅ Feature map shape dari layer {layer_index}:", feat.shape)
 
-            # 🔹 Visualisasi salah satu channel dari feature map
-            num_channels = feat.shape[1]
-            channel_to_show = st.slider("Pilih channel untuk ditampilkan", 0, num_channels-1, 0)
-            feature_img = feat[0, channel_to_show].cpu().numpy()
+            # # 🔹 Visualisasi salah satu channel dari feature map
+            # num_channels = feat.shape[1]
+            # channel_to_show = st.slider("Pilih channel untuk ditampilkan", 0, num_channels-1, 0)
+            # feature_img = feat[0, channel_to_show].cpu().numpy()
 
-            st.image(feature_img, caption=f"Feature Map - Layer {layer_index} (Channel {channel_to_show})", 
-                    use_column_width=True, clamp=True)
+            # st.image(feature_img, caption=f"Feature Map - Layer {layer_index} (Channel {channel_to_show})", 
+            #         use_column_width=True, clamp=True)
 
         # --- Langkah 5: Jaringan Saraf Belajar Fitur (Lapisan Tersembunyi) ---
         with st.expander("Langkah 5: Jaringan Saraf 'Belajar' Pola (Lapisan Tersembunyi)"):
