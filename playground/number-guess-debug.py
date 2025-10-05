@@ -40,6 +40,17 @@ canvas_result = st_canvas(
     key="canvas_drawing",
 )
 
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col1:
+    stroke_width = st.slider("✏️ Brush size", 1, 50, 25)
+
+with col2:
+    stroke_color = st.color_picker("🎨 Brush color", "#FFFFFF")
+
+with col3:
+    bg_color = st.color_picker("🖼️ Background", "#000000")
+
 # --- Tombol Prediksi ---
 st.markdown("---")
 if st.button("Prediksi Angka", type="primary"):
