@@ -28,7 +28,7 @@ canvas_height = 280
 left_col, right_col = st.columns([1, 1])
 
 with right_col:
-    st.subheader("🖌️ Settings")
+    # st.subheader("🖌️ Settings")
     stroke_width = st.slider("Brush size", 1, 50, 25)
     stroke_color = st.color_picker("Brush color", "#FFFFFF")
     bg_color = st.color_picker("Background", "#000000")
