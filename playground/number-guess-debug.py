@@ -41,93 +41,101 @@ canvas_result = st_canvas(
 )
 
 # --- Tombol Prediksi ---
+st.markdown("---")
 if st.button("Prediksi Angka", type="primary"):
     if canvas_result.image_data is not None:
-        img_data = canvas_result.image_data
+        # Konversi data gambar dari kanvas ke PIL Image
+        img_data = canvas_result.image_data # RGBA numpy array
         pil_img = Image.fromarray(img_data.astype('uint8'), 'RGBA')
 
-        # Konversi ke RGB dan resize
-        rgb_img = pil_img.convert("RGB")
-        yolo_input_size = 224
-        resized_img = rgb_img.resize((yolo_input_size, yolo_input_size), Image.LANCZOS)
-        input_array = np.array(resized_img)
+        st.subheader("🔍 Alur Proses Prediksi AI (YOLO):")
 
-        # Prediksi
-        results = model.predict(source=input_array, verbose=False)
+        # --- Langkah 2: Gambar Asli Anda ---
+        with st.expander("Langkah 2: Gambar Asli yang Anda Gambar"):
+            st.markdown("Ini adalah gambar angka yang baru saja Anda gambar di kanvas.")
+            st.image(pil_img, caption="Gambar Asli", use_column_width=False, width=280)
 
-        if results and hasattr(results[0], 'probs'):
-            probs = results[0].probs
-            predicted_class_id = probs.top1
-            confidence = probs.top1conf.item() * 100
-            predicted_label = model.names[predicted_class_id]
+        # --- Langkah 3: Pra-pemrosesan Gambar (Agar AI Mengerti) ---
+        with st.expander("Langkah 3: Pra-pemrosesan Gambar (Sesuai Kebutuhan YOLO!)"):
+            st.markdown("Model AI (YOLO) memiliki format input yang spesifik. Gambar Anda akan diubah agar sesuai:")
+            
+            # Konversi RGBA ke RGB (YOLO classification butuh RGB)
+            st.markdown("#### 3.1 Konversi ke RGB")
+            st.markdown("Gambar dari kanvas (RGBA) diubah menjadi format RGB (Red, Green, Blue) yang umum digunakan oleh model Deep Learning.")
+            rgb_img = pil_img.convert("RGB")
+            st.image(rgb_img, caption="Setelah Konversi ke RGB", use_column_width=False, width=280)
+            
+            # Ukuran input umum untuk YOLO classification adalah 224x224, 640x640, dll.
+            # Kita akan resize ke 224x224 sebagai contoh umum.
+            yolo_input_size = 224 
+            st.markdown(f"#### 3.2 Ubah Ukuran ke {yolo_input_size}x{yolo_input_size} Piksel")
+            st.markdown(f"Model YOLO dilatih dengan gambar berukuran {yolo_input_size}x{yolo_input_size} piksel. Gambar Anda akan diubah ukurannya agar sesuai.")
+            resized_img = rgb_img.resize((yolo_input_size, yolo_input_size), Image.LANCZOS)
+            st.image(resized_img, caption=f"Setelah Ukuran {yolo_input_size}x{yolo_input_size}", use_column_width=False, width=280)
+            
+            # Konversi ke NumPy array (model YOLO menerima numpy array atau PIL Image)
+            input_array = np.array(resized_img)
+            
+            st.write("Bentuk data akhir yang masuk ke model: `(tinggi, lebar, channel)`")
+            st.code(str(input_array.shape), language='python') 
+            st.caption("Ini berarti gambar dengan tinggi dan lebar tertentu, serta 3 channel warna (RGB). Normalisasi piksel (0-255 menjadi 0-1) biasanya diurus secara internal oleh model YOLO.")
 
-            st.markdown(f"### AI Memprediksi Angka: **{predicted_label}**")
-            st.markdown(f"Dengan Keyakinan: **{confidence:.2f}%**")
+        # --- Langkah 4: Model Menerima Input (Lapisan Input) ---
+        with st.expander("Langkah 4: Model YOLO 'Melihat' Angka Anda (Lapisan Input)"):
+            st.markdown("Gambar yang sudah diproses ini (RGB, ukuran tertentu) kemudian dimasukkan ke lapisan input model YOLO.")
+            st.markdown("Model ini didesain untuk memproses gambar secara efisien dan mulai mengekstrak informasi.")
 
-            prob_df = pd.DataFrame({
-                'Angka': [model.names[i] for i in range(len(model.names))],
-                'Probabilitas': probs.data.cpu().numpy()
-            })
-            st.bar_chart(prob_df.set_index('Angka'))
+        # --- Langkah 5: Jaringan Saraf Belajar Fitur (Lapisan Tersembunyi) ---
+        with st.expander("Langkah 5: Jaringan Saraf 'Belajar' Pola (Lapisan Tersembunyi)"):
+            st.markdown("Di dalam model YOLO, ada banyak 'lapisan tersembunyi' yang bekerja seperti detektif visual.")
+            st.markdown("Setiap lapisan secara otomatis belajar mendeteksi fitur atau pola yang semakin kompleks pada gambar:")
+            st.markdown("- Lapisan awal mungkin fokus pada **garis, sudut, atau tekstur dasar**.")
+            st.markdown("- Lapisan selanjutnya menggabungkan fitur-fitur dasar ini untuk mengenali **bentuk-bentuk angka** secara keseluruhan.")
+            st.markdown("YOLO secara khusus sangat efisien dalam mengenali pola-pola ini dengan cepat.")
 
-            # ---- Langkah 4: Heatmap Input ----
-            with st.expander("Langkah 4: Heatmap Input"):
-                fig, ax = plt.subplots()
-                ax.imshow(resized_img, cmap="gray")
-                ax.set_title("Heatmap Input ke Model")
-                st.pyplot(fig)
+        # --- Langkah 6: Prediksi & Probabilitas (Lapisan Output) ---
+        with st.expander("Langkah 6: AI 'Memutuskan' dan Memberi Keyakinan (Lapisan Output)"):
+            st.markdown("Setelah memproses semua pola, lapisan terakhir model YOLO akan mengeluarkan 'suara' atau **probabilitas** untuk setiap kelas angka (0-9).")
+            st.markdown("Probabilitas ini menunjukkan seberapa yakin AI bahwa gambar yang Anda berikan adalah angka tertentu.")
+            
+            # Lakukan prediksi menggunakan model YOLO
+            # 'predict' method returns a list of Results objects
+            results = model.predict(source=input_array, verbose=False) 
+            
+            # Asumsi: model classification akan memiliki atribut 'probs' pada objek Results
+            # dan 'names' untuk nama-nama kelas.
+            if results and hasattr(results[0], 'probs'):
+                probs = results[0].probs # Probabilities object
+                predicted_class_id = probs.top1 # Index of the top 1 prediction
+                confidence = probs.top1conf.item() * 100 # Confidence score
+                
+                # Mendapatkan nama kelas dari model (misalnya '0', '1', ..., '9')
+                # Asumsi model.names berisi ['0', '1', ..., '9']
+                predicted_label = model.names[predicted_class_id]
+                
+                st.markdown(f"### AI Memprediksi Angka: **{predicted_label}**")
+                st.markdown(f"Dengan Keyakinan: **{confidence:.2f}%**")
 
-            # ---- Langkah 5: Feature Map Explorer ----
-            with st.expander("Langkah 5: Feature Map Explorer"):
-                st.write("Geser slider untuk melihat feature map dari layer berbeda.")
-                tensor_input = torch.from_numpy(input_array).permute(2,0,1).unsqueeze(0).float()/255.0
+                st.markdown("#### Probabilitas untuk Setiap Angka:")
+                # Tampilkan probabilitas dalam bentuk bar chart
+                prob_df = pd.DataFrame({
+                    'Angka': [model.names[i] for i in range(len(model.names))],
+                    'Probabilitas': probs.data.cpu().numpy() # Pastikan data numpy
+                })
+                st.bar_chart(prob_df.set_index('Angka'))
+                st.caption("Batang tertinggi menunjukkan angka yang paling mungkin menurut AI.")
+            else:
+                st.error("Model tidak menghasilkan probabilitas klasifikasi yang diharapkan. Pastikan ini adalah model klasifikasi YOLO yang benar.")
 
-                layer_idx = st.slider("Pilih layer untuk visualisasi", 0, len(model.model)-1, 0)
-                features = model.model[layer_idx](tensor_input)
 
-                # tampilkan 8 feature map pertama
-                num_features = min(8, features.shape[1])
-                fig, axes = plt.subplots(1, num_features, figsize=(15,3))
-                for i in range(num_features):
-                    axes[i].imshow(features[0,i].detach().cpu().numpy(), cmap="viridis")
-                    axes[i].axis("off")
-                st.pyplot(fig)
-
-            # ---- Extra: Grad-CAM ----
-            with st.expander("Visualisasi Grad-CAM"):
-                st.write("Menunjukkan area pada gambar yang paling berpengaruh pada prediksi.")
-
-                # Grad-CAM sederhana di conv terakhir
-                target_layer = model.model[-2]
-                grad_cam_input = tensor_input.clone().requires_grad_(True)
-                act = {}
-                grad = {}
-
-                def forward_hook(module, inp, out):
-                    act['value'] = out
-                def backward_hook(module, ginp, gout):
-                    grad['value'] = gout[0]
-
-                target_layer.register_forward_hook(forward_hook)
-                target_layer.register_backward_hook(backward_hook)
-
-                out = model.model(grad_cam_input)
-                class_score = out[0, predicted_class_id]
-                class_score.backward()
-
-                weights = grad['value'][0].mean(dim=(1,2))
-                cam = torch.zeros(act['value'].shape[2:])
-                for i, w in enumerate(weights):
-                    cam += w * act['value'][0,i]
-                cam = torch.relu(cam)
-                cam = cam / cam.max()
-
-                cam_resized = cv2.resize(cam.detach().cpu().numpy(), (yolo_input_size, yolo_input_size))
-                heatmap = cv2.applyColorMap(np.uint8(255*cam_resized), cv2.COLORMAP_JET)
-                overlay = cv2.addWeighted(np.array(resized_img), 0.5, heatmap, 0.5, 0)
-
-                st.image(overlay, caption="Grad-CAM Overlay")
-        else:
-            st.error("Model tidak menghasilkan probabilitas klasifikasi yang diharapkan.")
     else:
         st.warning("Silakan gambar angka di kanvas terlebih dahulu!")
+
+st.markdown("---")
+st.markdown("### 💡 Apa yang Anda Pelajari:")
+st.markdown("""
+* **Pra-pemrosesan Khusus:** Setiap model AI membutuhkan input dengan format (ukuran, channel warna) yang spesifik.
+* **YOLO untuk Klasifikasi:** YOLO tidak hanya untuk deteksi objek, tapi juga sangat efisien dalam tugas klasifikasi gambar.
+* **Keyakinan AI:** AI tidak 100% yakin, tapi memberikan 'keyakinan' dalam bentuk probabilitas untuk setiap kemungkinan.
+""")
+st.markdown("Coba gambar angka yang berbeda dan lihat bagaimana AI memprediksinya!")
