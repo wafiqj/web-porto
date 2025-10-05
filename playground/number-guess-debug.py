@@ -9,8 +9,9 @@ from ultralytics import YOLO
 import cv2
 
 # --- Title and Description ---
-st.markdown("# 🔢 Guess the Number :blue-badge[by AI, not you ✌🏻]")
+st.markdown("# 🔢 Guess the Number :blue-badge[by AI, not you.]")
 st.markdown("Tags : :blue-badge[Image Classification], :blue-badge[Deep Learning], :blue-badge[Computer Vision]")
+st.markdown("Tech : :red-badge[Streamlit Canvas], :red-badge[YOLO], :red-badge[Pandas], :red-badge[Numpy], :red-badge[PyTorch], :red-badge[Pillow], :red-badge[Matplotlib]")
 
 @st.cache_resource
 def load_yolo_classify_model():
@@ -95,7 +96,7 @@ if st.button("Guess the number", type="primary"):
             # --- Visual layout: original → preprocessed ---
             col1, col2, col3 = st.columns([1, 1, 1])
             with col1:
-                st.image(pil_img, caption="🖋️ Original Drawing (280x280)")
+                st.image(pil_img, caption=f"🖋️ Original Drawing ({canvas_width}x{canvas_height})")
             with col2:
                 st.image(resized_img, caption=f"✨ Preprocessed ({yolo_input_size}×{yolo_input_size})")
 
@@ -254,13 +255,3 @@ if st.button("Guess the number", type="primary"):
 
     else:
         st.warning("Please draw a number first!")
-
-# ============================================================
-# ⚙️ Tech Stack Section
-# ============================================================
-st.markdown("---")
-st.markdown("### ⚙️ Tech Stack")
-st.markdown("""
-**Frameworks & Tools:** Streamlit · PyTorch · Ultralytics YOLO · NumPy · Matplotlib · PIL  
-**Concepts:** Image Preprocessing · Convolutional Neural Networks · Feature Map Visualization · Image Classification
-""")
