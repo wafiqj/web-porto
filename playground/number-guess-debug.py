@@ -9,7 +9,7 @@ from ultralytics import YOLO
 import cv2
 
 # --- Title and Description ---
-st.markdown("# 🔢 Guess the Number")
+st.markdown("# 🔢 Guess the Number :blue-badge[by AI, not you ✌🏻]")
 st.markdown("Tags : :blue-badge[Image Classification], :blue-badge[Deep Learning], :blue-badge[Computer Vision]")
 
 @st.cache_resource
@@ -20,29 +20,43 @@ def load_yolo_classify_model():
 
 model = load_yolo_classify_model()
 
-st.markdown("""
-Draw any digit you like, and let AI guess your number.  
-Whether it’s a perfect ‘8’ or a messy ‘2’, the model will do its best to recognize it — just like a mini handwriting recognition powered by deep learning.
-""")
+with st.expander("📝 Readme", expanded=True):
+    st.markdown("""
+    **Guess the Number** is an interactive playground that showcases how AI recognizes handwritten digits.  
+    It uses Deep Learning and Computer Vision to analyze your drawing and predict which number you wrote.
+
+    **How to Play:**
+    1. Draw any digit (0–9) on the canvas.
+    2. **(optional)** Adjust brush color, size, or background as you like.
+    3. Click **Guess the number** to let the AI predict.
+    4. Explore how the model processes your drawing — from preprocessing, feature extraction, to final prediction.
+
+    **Features:**
+    - Interactive drawing canvas with customizable brush and background.
+    - Step-by-step AI visualization (preprocessing → feature learning → classification).
+    - Confidence chart showing model probabilities.
+
+    Draw any digit you like, and let AI guess your number. Whether it’s a perfect ‘8’ or a messy ‘2’, the model will do its best to recognize it — just like a mini handwriting recognition powered by deep learning. ✨
+    """)
 st.markdown("---")
 
 # --- Canvas Settings ---
-canvas_width = 280
+canvas_width = 340
 canvas_height = 280
 
-one_col, two_col, three_col = st.columns([1,1,1.7], gap="small")
+one_col, two_col, three_col = st.columns([1,1,1], gap="medium")
 
 with two_col:
     stroke_width = st.slider("Brush size", 1, 50, 25)
     stroke_color = st.color_picker("Brush color", "#FFFFFF")
-    bg_color = st.color_picker("Background", "#000000")
+    # bg_color = st.color_picker("Background", "#000000")
 
 with one_col:
     canvas_result = st_canvas(
         fill_color="rgba(255, 255, 255, 0)",
         stroke_width=stroke_width,
         stroke_color=stroke_color,
-        background_color=bg_color,
+        background_color="#000000",
         height=canvas_height,
         width=canvas_width,
         drawing_mode="freedraw",
@@ -193,6 +207,33 @@ if st.button("Guess the number", type="primary"):
             """)
 
             results = model.predict(source=input_array, verbose=False)
+            with three_col:
+                if results and hasattr(results[0], 'probs'):
+                    probs = results[0].probs
+                    predicted_class_id = probs.top1
+                    confidence = probs.top1conf.item() * 100
+                    predicted_label = model.names[predicted_class_id]
+
+                    # --- Display prediction result inside a styled container ---
+                    st.markdown("""
+                    <div style='
+                        background-color:#f5f5f5;
+                        border:1px solid #ccc;
+                        border-radius:12px;
+                        padding:25px 15px;
+                        margin-bottom:15px;
+                        text-align:center;
+                        box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+                    '>
+                        <h3 style='margin-top:0;'>Prediction Result</h3>
+                        <h1 style='font-size:70px; margin:10px 0;'>{predicted_label}</h1>
+                        <p style='font-size:18px; color:gray;'>Confidence: {confidence:.2f}%</p>
+                    </div>
+                    """.format(predicted_label=predicted_label, confidence=confidence),
+                    unsafe_allow_html=True)
+                else:
+                    st.warning("⚠️ Please draw a number and click 'Guess the number'.")
+
 
             if results and hasattr(results[0], 'probs'):
                 probs = results[0].probs
