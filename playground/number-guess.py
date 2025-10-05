@@ -29,12 +29,12 @@ with st.expander("📝 Readme", expanded=True):
     **How to Play:**
     1. Draw any digit (0–9) on the canvas.
     2. **(optional)** Adjust brush color, size, or background as you like.
-    3. Click **Guess the number** to let the AI predict.
+    3. Click **Guess the number** to let the AI make a prediction.
     4. Explore how the model processes your drawing — from preprocessing, feature extraction, to final prediction.
 
     **Features:**
     - Interactive drawing canvas with customizable brush and background.
-    - Step-by-step AI visualization (preprocessing → feature learning → classification).
+    - Step-by-step visualization of the AI's process (preprocessing → feature learning → classification).
     - Confidence chart showing model probabilities.
 
     Draw any digit you like, and let AI guess your number. Whether it’s a perfect ‘8’ or a messy ‘2’, the model will do its best to recognize it — just like a mini handwriting recognition powered by deep learning. ✨
@@ -233,7 +233,7 @@ if st.button("Guess the number", type="primary"):
                     """.format(predicted_label=predicted_label, confidence=confidence),
                     unsafe_allow_html=True)
                 else:
-                    st.warning("⚠️ Please draw a number and click 'Guess the number'.")
+                    st.warning("⚠️ Please draw a number first and then click 'Guess the number'.")
 
 
             if results and hasattr(results[0], 'probs'):
