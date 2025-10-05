@@ -21,15 +21,16 @@ model = load_yolo_classify_model()
 
 st.markdown("Mari kita lihat bagaimana AI 'melihat' dan memprediksi angka yang Anda gambar menggunakan model YOLO!")
 
-# --- Canvas untuk Menggambar Angka ---
+# --- Pengaturan warna & ukuran kanvas ---
 canvas_width = 280
 canvas_height = 280
-stroke_width = 25
-bg_color = "#000000"
-stroke_color = "#FFFFFF"
+stroke_width = st.slider("✏️ Brush size:", 5, 50, 20)
+stroke_color = st.color_picker("🎨 Choose brush color", "#000000")  # default hitam
+bg_color = st.color_picker("🧻 Choose background color", "#FFFFFF")  # default putih
 
+# --- Kanvas gambar ---
 canvas_result = st_canvas(
-    fill_color="rgba(255, 255, 255, 0)",
+    fill_color="rgba(255, 255, 255, 0)",  # transparan (biar gak nutup gambar)
     stroke_width=stroke_width,
     stroke_color=stroke_color,
     background_color=bg_color,
