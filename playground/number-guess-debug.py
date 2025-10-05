@@ -95,7 +95,7 @@ if st.button("Prediksi Angka", type="primary"):
             layer_index = st.number_input("🔢 Pilih index layer yang ingin dilihat (0 - {}):".format(len(torch_model.model)-1), 
                                         min_value=0, 
                                         max_value=len(torch_model.model)-1, 
-                                        value=5, 
+                                        value=2, 
                                         step=1)
             
             features = {}
