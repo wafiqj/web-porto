@@ -25,7 +25,7 @@ st.markdown("Mari kita lihat bagaimana AI 'melihat' dan memprediksi angka yang A
 canvas_width = 280
 canvas_height = 280
 
-left_col, right_col = st.columns([1, 1])
+left_col, right_col = st.columns([1, 2])
 
 with right_col:
     # st.subheader("🖌️ Settings")
