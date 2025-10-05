@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from ultralytics import YOLO
-import cv2
+# import cv2
 
 # --- Title and Description ---
 st.markdown("# 🔢 Guess the Number :blue-badge[by AI, not you.]")
