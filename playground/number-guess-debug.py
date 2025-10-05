@@ -21,7 +21,17 @@ model = load_yolo_classify_model()
 
 st.markdown("Mari kita lihat bagaimana AI 'melihat' dan memprediksi angka yang Anda gambar menggunakan model YOLO!")
 
+# --- Pengaturan warna & ukuran kanvas ---
+canvas_width = 280
+canvas_height = 280
+
 left_col, right_col = st.columns([4, 1])
+
+with right_col:
+    st.subheader("🖌️ Settings")
+    stroke_width = st.slider("Brush size", 1, 50, 25)
+    stroke_color = st.color_picker("Brush color", "#FFFFFF")
+    bg_color = st.color_picker("Background", "#000000")
 
 with left_col:
     canvas_result = st_canvas(
@@ -34,12 +44,6 @@ with left_col:
         drawing_mode="freedraw",
         key="canvas_drawing",
     )
-
-with right_col:
-    st.subheader("🖌️ Settings")
-    stroke_width = st.slider("Brush size", 1, 50, 25)
-    stroke_color = st.color_picker("Brush color", "#FFFFFF")
-    bg_color = st.color_picker("Background", "#000000")
 
 # --- Tombol Prediksi ---
 st.markdown("---")
