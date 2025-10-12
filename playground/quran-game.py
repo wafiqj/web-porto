@@ -7,6 +7,10 @@ from Levenshtein import distance
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
 import tempfile 
+import librosa
+import soundfile as sf
+import noisereduce as nr
+from pydub import AudioSegment
 
 st.set_page_config(layout="wide", page_title="Quran Game: Random Ayat")
 
@@ -39,6 +43,23 @@ def speech_to_text_from_file(file_path):
         else:
             return f"Canceled: {cancellation_details.reason}"
     return "An unknown error occurred."
+
+def enhance_audio(input_path, output_path, target_dBFS=-20.0):
+    """
+    Enhances audio by reducing noise and normalizing volume.
+    1. Noise reduction with noisereduce
+    2. Volume normalization with pydub
+    """
+    # --- Step 1: Noise reduction ---
+    y, sr = librosa.load(input_path, sr=None)
+    reduced = nr.reduce_noise(y=y, sr=sr)
+    sf.write(output_path, reduced, sr)
+
+    # --- Step 2: Normalize volume ---
+    audio = AudioSegment.from_file(output_path)
+    change_in_dBFS = target_dBFS - audio.dBFS
+    normalized_audio = audio.apply_gain(change_in_dBFS)
+    normalized_audio.export(output_path, format="wav")
 
 # --- Fungsi untuk Memuat Data Quran ---
 @st.cache_data 
@@ -303,29 +324,39 @@ if uploaded_audio is not None:
 
             st.write("Audio recorded successfully!")
             
-            st.info("Analyzing your audio for transcription...")
-            transcribed_text = speech_to_text_from_file(temp_audio_file_path)
-
-            st.session_state.last_transcription = transcribed_text 
+            info_placeholder = st.empty()
+            info_placeholder.info("Analyzing your audio for transcription...")
             
+            # --- Enhance audio before sending to Azure ---
+            enhanced_audio_path = temp_audio_file_path.replace('.wav', '_enhanced.wav')
+            enhance_audio(temp_audio_file_path, enhanced_audio_path)
+
+            # --- Speech recognition on enhanced audio ---
+            transcribed_text = speech_to_text_from_file(enhanced_audio_path)
+
+            st.session_state.last_transcription = transcribed_text
+
             is_match, similarity_score = fuzzy_match_arabic_ayat(next_ayat['text_ar'], transcribed_text)
-            st.session_state.last_match_result = (is_match, similarity_score) 
+            st.session_state.last_match_result = (is_match, similarity_score)
+            info_placeholder.empty()
             
             st.success("Transcription complete!")
-            st.write("**Your recognized recitation text:**")
-            st.code(transcribed_text)
-            
-            st.markdown("---")
+    
             if is_match:
                 st.success(f"**🥳 Match! You successfully connected the verse!** (Similarity Score: {similarity_score:.2f})")
             else:
                 st.error(f"**😔 No match. Please try again.** (Similarity Score: {similarity_score:.2f})")
                 st.info("Ensure your audio contains the correct recitation of the target verse.")
+
+            with st.expander("See Transcription Result", expanded=True):
+                st.markdown(f"**Your Transcription:** {transcribed_text}")
         except Exception as e:
             st.error(f"An error occurred during processing: {e}")
         finally:
             if temp_audio_file_path and os.path.exists(temp_audio_file_path):
                 os.remove(temp_audio_file_path)
+            if 'enhanced_audio_path' in locals() and os.path.exists(enhanced_audio_path):
+                os.remove(enhanced_audio_path)
 
 
 st.markdown("---")

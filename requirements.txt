@@ -12,3 +12,7 @@ streamlit-webrtc
 streamlit-drawable-canvas
 ultralytics
 opencv-python-headless
+pydub
+librosa
+noisereduce
+soundfile
