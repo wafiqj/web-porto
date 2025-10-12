@@ -234,8 +234,10 @@ if 'last_match_result' not in st.session_state:
 if 'previous_juz_options' not in st.session_state:
     st.session_state.previous_juz_options = ["30 Juz"]
 
-st.markdown("# 📖 Quran Game")
-st.markdown("Tags : :blue-badge[Speech Recognition], :blue-badge[Speech-to-text], :blue-badge[Fuzzy Analysis]")
+st.markdown("# 📖 Quran Game :blue-badge['Sambung Ayat']")
+st.markdown("Tags : :blue-badge[Speech Recognition], :blue-badge[Speech-to-Text], :blue-badge[Fuzzy Matching]")
+st.markdown("Tech : :red-badge[Azure Speech SDK], :red-badge[Python-Levenshtein]")
+
 
 with st.expander("📝 Readme", expanded=True):
     st.markdown("""
