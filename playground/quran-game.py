@@ -342,11 +342,16 @@ if uploaded_audio is not None:
             
             st.success("Transcription complete!")
     
-            if is_match:
-                st.success(f"**🥳 Match! You successfully connected the verse!** (Similarity Score: {similarity_score:.2f})")
+            # --- Display result feedback based on similarity score ---
+            score = similarity_score
+
+            if score >= 0.8:
+                st.success(f"🟢 **Perfect!** Your recitation is very close! (Score: {score:.2f})")
+            elif 0.5 <= score < 0.8:
+                st.warning(f"🟡 **Good!** You’re quite close. Try a bit clearer recitation. (Score: {score:.2f})")
             else:
-                st.error(f"**😔 No match. Please try again.** (Similarity Score: {similarity_score:.2f})")
-                st.info("Ensure your audio contains the correct recitation of the target verse.")
+                st.error(f"🔴 **Try again.** The system couldn’t match your verse. (Score: {score:.2f})")
+                st.info("💡 Tip: Try recording in a quieter place or speak louder and more clearly.")
 
             with st.expander("See Transcription Result", expanded=True):
                 st.markdown(f"**Your Transcription:** {transcribed_text}")
