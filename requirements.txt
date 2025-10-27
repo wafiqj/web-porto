@@ -17,4 +17,3 @@ pydub
 librosa
 noisereduce
 soundfile
-protobuf<=3.20.3
