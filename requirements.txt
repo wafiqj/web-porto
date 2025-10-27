@@ -1,3 +1,4 @@
+streamlit
 google-generativeai
 dotenv
 email_validator
