@@ -91,7 +91,7 @@ def send_message(user_message):
                 history_for_gemini = []
 
                 if wafiq_knowledge:
-                    history_for_gemini.append({"role": "user", "parts": [f"You're WAPS (Wafiq Assistant Personal System), a personal assistant built to help people get to know more about Wafiq. Here's some background knowledge about Wafiq: {wafiq_knowledge}"]})
+                    history_for_gemini.append({"role": "user", "parts": [f"You're WAPS (Wafiq Assistant Personal System), a personal assistant built to help people get to know more about Wafiq. Here's some background knowledge about Wafiq: {wafiq_knowledge}. But you can answer question outside of this knowledge as well."]})
                     history_for_gemini.append({"role": "model", "parts": ["Understood. As WAPS, I will assist users with any questions about Wafiq based on the information."]})
 
                 for msg in st.session_state.messages:
