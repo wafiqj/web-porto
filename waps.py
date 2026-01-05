@@ -108,8 +108,20 @@ def send_message(user_message):
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
 
             except Exception as e:
-                st.error(f"An error occurred while processing the request: {e}")
-                st.markdown("Please try again or check your internet connection.")
+                err_text = str(e)
+                quota_indicators = ["quota", "Quota exceeded", "exceeded your current quota", "429"]
+                if any(indicator.lower() in err_text.lower() for indicator in quota_indicators):
+                    friendly_msg = (
+                        "Maaf, kuota API Google Gemini Anda telah habis untuk saat ini. "
+                        "Silakan periksa paket dan detail pembayaran Anda, atau coba lagi nanti."
+                    )
+                    # Append to chat history and render as a normal assistant message
+                    st.session_state.messages.append({"role": "assistant", "content": friendly_msg})
+                    with st.chat_message("assistant"):
+                        st.markdown(friendly_msg)
+                else:
+                    st.error(f"An error occurred while processing the request: {e}")
+                    st.markdown("Please try again or check your internet connection.")
 
 # --- Logic for Clicked Pills ---
 if selection:        
