@@ -38,7 +38,7 @@ wafiq.say_hi()
     
     st.divider()
     st.markdown("""
-###### Want to know more about my background, skills, and experience?
+###### Want to know more about Wafiq's background, skills, and experience?
 Feel free to explore my CV below.""")
     st.link_button("View CV", url="/resume", type="secondary")
 
